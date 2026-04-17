@@ -58,7 +58,7 @@
   padding: 12px clamp(16px, 3vw, 22px);
   font: inherit;
   font-size: clamp(0.875rem, 2.8vw, 0.95rem);
-  font-weight: 600;
+  font-weight: 400;
   line-height: 1;
   text-decoration: none;
   border-radius: 999px;

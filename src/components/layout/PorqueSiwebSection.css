@@ -37,11 +37,31 @@
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   align-items: stretch;
   min-height: min(360px, 52vw);
-  background: #fff;
+  /* Mismo cristal que el formulario Kit CTA */
+  background: linear-gradient(
+    155deg,
+    rgba(255, 255, 255, 0.025) 0%,
+    rgba(255, 255, 255, 0.01) 48%,
+    rgba(248, 250, 252, 0.02) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: clamp(14px, 2vw, 18px);
   overflow: hidden;
-  box-shadow: 0 12px 40px rgba(15, 23, 42, 0.1);
+  box-shadow:
+    0 4px 24px rgba(15, 23, 42, 0.02),
+    0 16px 48px rgba(15, 23, 42, 0.025),
+    0 12px 40px rgba(15, 23, 42, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.025);
+  backdrop-filter: blur(5px) saturate(108%);
+  -webkit-backdrop-filter: blur(5px) saturate(108%);
   box-sizing: border-box;
+}
+
+@supports not (backdrop-filter: blur(1px)) {
+  .porque-siweb__card {
+    background: rgba(255, 255, 255, 0.5);
+  }
 }
 
 @media (max-width: 900px) {
@@ -95,13 +115,25 @@
   position: absolute;
   inset: 0;
   z-index: 2;
-  background: linear-gradient(90deg, transparent 0%, transparent 38%, rgba(255, 255, 255, 0.35) 62%, #fff 88%);
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    transparent 38%,
+    rgba(255, 255, 255, 0.22) 62%,
+    rgba(255, 255, 255, 0.08) 88%
+  );
   pointer-events: none;
 }
 
 @media (max-width: 900px) {
   .porque-siweb__media::after {
-    background: linear-gradient(180deg, transparent 0%, transparent 35%, rgba(255, 255, 255, 0.4) 65%, #fff 92%);
+    background: linear-gradient(
+      180deg,
+      transparent 0%,
+      transparent 35%,
+      rgba(255, 255, 255, 0.28) 65%,
+      rgba(255, 255, 255, 0.1) 92%
+    );
   }
 }
 
@@ -112,7 +144,7 @@
   gap: clamp(20px, 3vw, 28px);
   padding: clamp(28px, 4vw, 44px) clamp(24px, 4vw, 40px) clamp(28px, 4vw, 44px) clamp(20px, 3vw, 32px);
   text-align: left;
-  background: #fff;
+  background: transparent;
 }
 
 @media (max-width: 900px) {
