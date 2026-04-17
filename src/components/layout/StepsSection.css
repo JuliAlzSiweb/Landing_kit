@@ -1,0 +1,107 @@
+.steps {
+  width: 100%;
+  max-width: var(--content-max);
+  margin-inline: auto;
+  margin-top: clamp(40px, 6vw, 88px);
+  padding: clamp(32px, 5vw, 72px) 0;
+  box-sizing: border-box;
+}
+
+.steps__heading {
+  margin: 0 0 clamp(28px, 4vw, 44px);
+  font-size: clamp(1.65rem, 3.5vw, 2.2rem);
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: -0.03em;
+  color: #0a0a0a;
+}
+
+.steps__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(20px, 3vw, 32px);
+  align-items: start;
+}
+
+@media (max-width: 1100px) {
+  .steps__list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .steps__list {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Referencia: en cada columna → número arriba, título, texto (todo alineado a la izquierda) */
+.steps__item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: clamp(8px, 1.2vw, 14px);
+  min-width: 0;
+}
+
+.steps__num {
+  width: 100%;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.steps__num-slot {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+  text-align: left;
+  line-height: 0;
+  background: transparent;
+}
+
+.steps__num-img {
+  display: block;
+  width: auto;
+  max-width: min(100%, 68px);
+  height: auto;
+  margin: 0;
+  object-fit: contain;
+  align-self: flex-start;
+}
+
+/* Paso 01: un poco más pequeño, alineado al bloque de texto */
+.steps__num-slot[data-step='1'] .steps__num-img {
+  max-width: min(100%, 58px);
+}
+
+.steps__body {
+  width: 100%;
+  text-align: left;
+  margin: 0;
+  padding: 0;
+}
+
+.steps__title {
+  margin: 0 0 clamp(10px, 1.6vw, 14px);
+  font-size: clamp(1.05rem, 2vw, 1.2rem);
+  font-weight: 700;
+  line-height: 1.25;
+  color: #0a0a0a;
+}
+
+.steps__text {
+  margin: 0;
+  font-size: clamp(0.92rem, 1.75vw, 1.02rem);
+  font-weight: 400;
+  line-height: 1.55;
+  color: #1a1a1a;
+}
+
+.steps__text strong {
+  font-weight: 700;
+  color: #0a0a0a;
+}

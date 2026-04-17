@@ -1,0 +1,193 @@
+/* Rompe el padding lateral de .site-main: bloque a ancho de viewport */
+.kit-solutions {
+  --kit-sol-accent: #2d9cdb;
+  position: relative;
+  width: calc(100% + 2 * var(--page-gutter));
+  max-width: 100vw;
+  margin-left: calc(-1 * var(--page-gutter));
+  margin-right: calc(-1 * var(--page-gutter));
+  margin-top: clamp(32px, 5vw, 72px);
+  padding: clamp(36px, 5vw, 72px) var(--page-gutter);
+  box-sizing: border-box;
+  border-radius: 0;
+  background: #f8f9fa;
+  overflow: hidden;
+}
+
+.kit-solutions::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 55% 80% at 0% 40%, rgba(45, 156, 219, 0.12), transparent 55%),
+    radial-gradient(ellipse 40% 60% at 8% 85%, rgba(45, 156, 219, 0.06), transparent 50%);
+  pointer-events: none;
+}
+
+.kit-solutions::after {
+  content: '';
+  position: absolute;
+  left: -5%;
+  top: 10%;
+  width: 45%;
+  height: 70%;
+  z-index: 0;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 200 200'%3E%3Cpath stroke='%232d9cdb' stroke-opacity='.18' stroke-width='1.2' d='M20 180c40-90 80-120 160-160'/%3E%3Cpath stroke='%232d9cdb' stroke-opacity='.12' stroke-width='1' d='M0 140c50-70 100-100 200-130'/%3E%3C/svg%3E")
+    no-repeat left center / contain;
+  pointer-events: none;
+}
+
+.kit-solutions__inner {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: var(--content-max);
+  margin-inline: auto;
+  box-sizing: border-box;
+}
+
+.kit-solutions__header {
+  margin: 0 auto clamp(28px, 4vw, 44px);
+  max-width: 52rem;
+  text-align: center;
+}
+
+.kit-solutions__title {
+  margin: 0 0 clamp(12px, 2vw, 18px);
+  font-size: clamp(1.35rem, 3.2vw, 2rem);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+  color: #2d2d2d;
+}
+
+.kit-solutions__title-line {
+  color: #2d2d2d;
+}
+
+.kit-solutions__title-accent {
+  color: var(--kit-sol-accent);
+}
+
+.kit-solutions__subtitle {
+  margin: 0 auto;
+  max-width: 42em;
+  font-size: clamp(0.92rem, 1.75vw, 1.05rem);
+  font-weight: 400;
+  line-height: 1.55;
+  color: #4b5563;
+}
+
+.kit-solutions__cols {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(28px, 4vw, 56px);
+  align-items: start;
+}
+
+@media (max-width: 800px) {
+  .kit-solutions__cols {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}
+
+.kit-solutions__col {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.kit-solutions__item {
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(14px, 2vw, 20px);
+  padding: clamp(16px, 2.2vw, 22px) 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.kit-solutions__col .kit-solutions__item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.kit-solutions__col .kit-solutions__item:first-child {
+  padding-top: 0;
+}
+
+@media (max-width: 800px) {
+  .kit-solutions__col:last-child .kit-solutions__item:first-child {
+    padding-top: clamp(16px, 2.2vw, 22px);
+    border-top: 1px solid #e5e7eb;
+  }
+}
+
+.kit-solutions__icon-wrap {
+  flex-shrink: 0;
+  width: clamp(44px, 5vw, 52px);
+  line-height: 0;
+}
+
+.kit-solutions__icon {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 52px;
+  object-fit: contain;
+}
+
+.kit-solutions__body {
+  min-width: 0;
+  text-align: left;
+}
+
+.kit-solutions__item-title {
+  margin: 0 0 clamp(6px, 1vw, 10px);
+  font-size: clamp(1rem, 1.85vw, 1.12rem);
+  font-weight: 700;
+  line-height: 1.25;
+  color: #2d2d2d;
+}
+
+.kit-solutions__item-text {
+  margin: 0;
+  font-size: clamp(0.9rem, 1.65vw, 0.98rem);
+  font-weight: 400;
+  line-height: 1.55;
+  color: #4b5563;
+}
+
+.kit-solutions__actions {
+  display: flex;
+  justify-content: center;
+  margin-top: clamp(28px, 4vw, 44px);
+}
+
+.kit-solutions__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 15px 32px;
+  font: inherit;
+  font-size: clamp(0.92rem, 1.85vw, 1rem);
+  font-weight: 600;
+  text-decoration: none;
+  color: #fff;
+  background: #1a1a1a;
+  border: 2px solid #1a1a1a;
+  border-radius: 999px;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.kit-solutions__btn:hover {
+  background: #2d2d2d;
+  border-color: #2d2d2d;
+}
+
+.kit-solutions__btn:focus-visible {
+  outline: 2px solid var(--kit-sol-accent);
+  outline-offset: 3px;
+}
