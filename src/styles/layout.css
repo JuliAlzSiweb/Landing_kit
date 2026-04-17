@@ -1,0 +1,14 @@
+#root {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  text-align: center;
+  min-height: max(
+    100svh,
+    calc(100vw * var(--landing-bg-h) / var(--landing-bg-w))
+  );
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  background: transparent;
+}

@@ -1,0 +1,14 @@
+.site-main {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  width: 100%;
+  padding: clamp(32px, 8vw, 64px) var(--page-gutter);
+  color: var(--main-fg);
+  background: var(--main-bg);
+  box-sizing: border-box;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.45);
+}
