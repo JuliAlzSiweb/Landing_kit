@@ -15,7 +15,7 @@
   --landing-bg-w: 1920;
   --landing-bg-h: 8335;
 
-  font: 18px/145% system-ui, 'Segoe UI', Roboto, sans-serif;
+  font: 18px/145% 'Poppins', system-ui, sans-serif;
   letter-spacing: 0.18px;
   color-scheme: light dark;
   color: var(--text);
@@ -49,7 +49,7 @@ html {
   );
   background-color: var(--page-bg-fallback);
   background-image: url('/landing-pc.svg');
-  background-size: 100% auto;
+  background-size: min(118vw, 2400px) auto;
   background-position: top center;
   background-repeat: no-repeat;
   background-attachment: scroll;

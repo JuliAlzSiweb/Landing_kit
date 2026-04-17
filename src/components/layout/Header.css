@@ -2,14 +2,13 @@
   flex-shrink: 0;
   width: 100%;
   text-align: left;
-  border-bottom: 1px solid var(--border);
-  background: var(--header-bar-bg);
-  padding-block: 18px;
+  background: transparent;
+  padding-block: 28px;
   padding-inline: 0;
   color: var(--header-text);
 
   @media (max-width: 640px) {
-    padding-block: 14px;
+    padding-block: 20px;
   }
 }
 
@@ -27,7 +26,7 @@
 
 .site-header__brand {
   font-weight: 700;
-  font-size: clamp(1.15rem, 3.5vw, 1.35rem);
+  font-size: clamp(1.35rem, 4.2vw, 1.75rem);
   letter-spacing: -0.02em;
   color: var(--header-text);
   text-decoration: none;

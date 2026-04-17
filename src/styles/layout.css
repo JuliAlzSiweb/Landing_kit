@@ -12,3 +12,18 @@
   box-sizing: border-box;
   background: transparent;
 }
+
+.site-main {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  min-height: 0;
+  width: 100%;
+  padding: clamp(40px, 7vw, 72px) var(--page-gutter) clamp(56px, 12vw, 120px);
+  color: #0a0a0a;
+  background: transparent;
+  box-sizing: border-box;
+  overflow-x: visible;
+}
