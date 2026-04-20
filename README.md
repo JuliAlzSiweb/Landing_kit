@@ -18,6 +18,9 @@ The site showcases the digital-kit solutions catalogue, collects leads via a con
 
 ```
 Landing_kit/
+├── .github/
+│   └── workflows/
+│       └── deploy.yml        # CI/CD automated deployment workflow
 ├── public/               # Static assets (SVGs, images, downloads)
 ├── src/
 │   ├── assets/           # Imported assets
@@ -87,7 +90,46 @@ yarn preview
 
 This serves the contents of `dist/` at **http://localhost:4173**.
 
-## Production Deployment
+## CI/CD — Automated Deployment
+
+The project includes a **GitHub Actions** workflow (`.github/workflows/deploy.yml`) that automatically deploys to the production server whenever a pull request is merged into the `deploy` branch.
+
+### How it works
+
+```
+PR merged into `deploy` ──▶ GitHub Actions triggered ──▶ SSH into server ──▶ Build & deploy
+```
+
+1. **Trigger** — The workflow runs when a pull request targeting the `deploy` branch is **closed and merged**.
+2. **Build verification** — On the GitHub Actions runner (Ubuntu), the workflow checks out the code, sets up **Node.js 20**, installs dependencies (`npm ci`), and runs `npm run build` to verify the project compiles correctly.
+3. **Production deployment** — Using SSH (via [`appleboy/ssh-action`](https://github.com/appleboy/ssh-action)), the workflow connects to the production server and executes:
+   ```bash
+   cd <PRODUCTION_PATH>
+   git pull origin deploy
+   npm ci
+   npm run build
+   ```
+
+### Required repository secrets
+
+The following secrets must be configured in **Settings → Secrets and variables → Actions**:
+
+| Secret | Description |
+|---|---|
+| `PRODUCTION_HOST` | Hostname or IP address of the production server |
+| `PRODUCTION_USER` | SSH username on the production server |
+| `SSH_PRIVATE_KEY` | Private SSH key authorized on the server |
+| `PRODUCTION_PATH` | Absolute path to the project directory on the server |
+
+### Deployment flow
+
+```
+master ──(develop)──▶ deploy branch ──(merge PR)──▶ GitHub Actions ──▶ Production server
+```
+
+> **Note:** Only **merged** pull requests trigger the deployment. Closed-without-merge PRs are ignored.
+
+## Production Deployment (Manual)
 
 Because the build output is a set of **static files** (`dist/`), you can serve them with any web server (Nginx, Apache, Caddy, a CDN, etc.).
 
@@ -99,29 +141,6 @@ npm install -g serve
 
 # Serve the production build
 serve -s dist
-```
-
-### Serving with PM2 (process manager)
-
-If you need the production server to stay alive, auto-restart on failure, and survive reboots, use [PM2](https://pm2.keymetrics.io/):
-
-```bash
-# Install PM2 globally (one-time)
-npm install -g pm2
-
-# Install a static file server globally (one-time)
-npm install -g serve
-
-# Start the static server under PM2
-pm2 start serve --name landing-kit -- -s dist
-
-# Useful PM2 commands
-pm2 status          # Check running processes
-pm2 logs landing-kit  # View logs
-pm2 restart landing-kit # Restart
-pm2 stop landing-kit    # Stop
-pm2 save            # Save process list for auto-restart on reboot
-pm2 startup         # Generate startup script so PM2 launches on boot
 ```
 
 ## Available Scripts
