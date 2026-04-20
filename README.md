@@ -124,7 +124,7 @@ The following secrets must be configured in **Settings → Secrets and variables
 ### Deployment flow
 
 ```
-master ──(develop)──▶ deploy branch ──(merge PR)──▶ GitHub Actions ──▶ Production server
+feature/work branch ──(merged PR into deploy)──▶ deploy branch ──▶ GitHub Actions ──▶ Production server
 ```
 
 > **Note:** Only **merged** pull requests trigger the deployment. Closed-without-merge PRs are ignored.
