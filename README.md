@@ -69,7 +69,7 @@ The app will be available at **http://localhost:5173** by default.
 
 ## Production Build
 
-Generate an optimised static bundle in the `dist/` folder:
+Generate an optimized static bundle in the `dist/` folder:
 
 ```bash
 npm run build
@@ -129,7 +129,7 @@ pm2 startup         # Generate startup script so PM2 launches on boot
 | Command | Description |
 |---|---|
 | `npm run dev` | Start the Vite development server |
-| `npm run build` | Create an optimised production build in `dist/` |
+| `npm run build` | Create an optimized production build in `dist/` |
 | `npm run preview` | Locally preview the production build |
 
 ## License
