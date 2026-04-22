@@ -8,12 +8,9 @@ export function PortatilPromoSection() {
     >
       <div className="promo-strip__inner">
         <div className="promo-strip__copy">
-          <p className="promo-strip__paragraph">
-            Por consumir tu bono con nosotros te incluimos un
-          </p>
-          <p className="promo-strip__paragraph promo-strip__paragraph--accent">
-            portátil <strong>completamente gratis</strong>
-          </p>
+          <p className="promo-strip__paragraph">Consume tu bono con nosotros y te regalamos a</p>
+          <p className="promo-strip__paragraph">gestión de clientes y facturación electrónica con</p>
+          <p className="promo-strip__paragraph">Verifactu, control horario y portátil incluidos</p>
         </div>
       </div>
     </section>
