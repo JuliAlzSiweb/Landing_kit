@@ -27,9 +27,9 @@ export function PortatilPromoSection() {
             </>
           ) : (
             <>
-              <p className="promo-strip__paragraph">Consume tu bono con nosotros y te regalamos la</p>
-              <p className="promo-strip__paragraph">gestión de clientes y facturación electrónica con</p>
-              <p className="promo-strip__paragraph">Verifactu, control horario y portátil incluidos</p>
+              <p className="promo-strip__paragraph">Consume tu bono con nosotros y llévate <strong> Verifactu y</strong></p>
+              <p className="promo-strip__paragraph"><strong>control horario digital</strong> hasta 2027, además de un</p>
+              <p className="promo-strip__paragraph"><strong>portátil incluido </strong> sin coste adicional</p>
             </>
           )}
         </div>

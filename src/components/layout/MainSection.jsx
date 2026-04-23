@@ -83,9 +83,8 @@ export function MainSection() {
                 <p className="hero__lead">
                   Contrata el programa de <strong>gestión de clientes y factura electrónica</strong>
                   <br />
-                  con tu Kit Digital. Nosotros incluimos <strong>Verifactu</strong>, control horario digital
-                  <br />
-                  y un portátil. Sin trámites con la administración, sin coste adicional.
+                  con tu Kit Digital. Nosotros incluimos <strong>Verifactu, control horario digital</strong> y un 
+                   <br /><strong>portátil</strong>. Sin trámites con la administración, sin coste adicional.
                 </p>
               </div>
             ) : (
