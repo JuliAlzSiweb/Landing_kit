@@ -1,6 +1,8 @@
 import { useCallback, useState } from 'react'
 import { LEAD_WEBHOOK_URL } from '../config/leadWebhook'
 
+const DAILY_SUBMIT_LIMIT = 3
+
 /**
  * Envío POST JSON al webhook. Éxito solo si la respuesta HTTP es exactamente 200.
  */
@@ -39,12 +41,57 @@ function getClientMetadata(form) {
   }
 }
 
+function getLocalDateKey() {
+  const now = new Date()
+  const year = now.getFullYear()
+  const month = String(now.getMonth() + 1).padStart(2, '0')
+  const day = String(now.getDate()).padStart(2, '0')
+  return `${year}-${month}-${day}`
+}
+
+function getDailyLimitStorageKey() {
+  if (typeof window === 'undefined') return ''
+  return `lead-submit-count:${getLocalDateKey()}`
+}
+
+function getDailySubmitCount() {
+  if (typeof window === 'undefined') return 0
+  try {
+    const key = getDailyLimitStorageKey()
+    if (!key) return 0
+    const raw = window.localStorage.getItem(key)
+    const parsed = Number(raw)
+    return Number.isFinite(parsed) && parsed > 0 ? parsed : 0
+  } catch {
+    return 0
+  }
+}
+
+function incrementDailySubmitCount() {
+  if (typeof window === 'undefined') return
+  try {
+    const key = getDailyLimitStorageKey()
+    if (!key) return
+    const nextCount = getDailySubmitCount() + 1
+    window.localStorage.setItem(key, String(nextCount))
+  } catch {
+    // Si localStorage no está disponible, no bloqueamos el envío.
+  }
+}
+
 export function useLeadFormSubmit() {
   const [status, setStatus] = useState('idle')
   const [errorMessage, setErrorMessage] = useState('')
 
   const submitForm = useCallback(async (form) => {
     if (!(form instanceof HTMLFormElement)) return
+    const dailySubmitCount = getDailySubmitCount()
+    if (dailySubmitCount >= DAILY_SUBMIT_LIMIT) {
+      setStatus('error')
+      setErrorMessage('Has alcanzado el límite diario de envíos. Inténtalo de nuevo mañana.')
+      return
+    }
+
     setStatus('loading')
     setErrorMessage('')
 
@@ -73,6 +120,7 @@ export function useLeadFormSubmit() {
         throw new Error(`El servidor respondió ${res.status}. Inténtelo de nuevo más tarde.`)
       }
 
+      incrementDailySubmitCount()
       setStatus('success')
     } catch (err) {
       setStatus('error')

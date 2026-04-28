@@ -8,6 +8,7 @@ const REQUIRED_MESSAGES = {
   kit_concedido: 'Selecciona si ya tienes concedido el Kit Digital.',
   solucion: 'Selecciona la solución que te interesa.',
 }
+const BLOCKED_EMAILS = new Set(['info@siwebintegral.com'])
 
 function isValidEmail(value) {
   return /^\S+@\S+\.\S+$/.test(value)
@@ -16,6 +17,10 @@ function isValidEmail(value) {
 function isValidPhone(value) {
   const digits = value.replace(/\D/g, '')
   return digits.length >= 7
+}
+
+function normalizeEmail(value) {
+  return String(value ?? '').trim().toLowerCase()
 }
 
 export function validateLeadForm(form) {
@@ -34,9 +39,16 @@ export function validateLeadForm(form) {
       continue
     }
 
-    if (fieldName === 'email' && !isValidEmail(value)) {
-      errors[fieldName] = 'Introduce un email válido.'
-      continue
+    if (fieldName === 'email') {
+      if (!isValidEmail(value)) {
+        errors[fieldName] = 'Introduce un email válido.'
+        continue
+      }
+
+      if (BLOCKED_EMAILS.has(normalizeEmail(value))) {
+        errors[fieldName] = 'Este correo no está permitido para el envío.'
+        continue
+      }
     }
 
     if (fieldName === 'telefono' && !isValidPhone(value)) {
