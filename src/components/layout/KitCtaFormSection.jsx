@@ -11,9 +11,16 @@ export function KitCtaFormSection() {
   const [fieldErrors, setFieldErrors] = useState({})
   const [hasSubmittedOnce, setHasSubmittedOnce] = useState(false)
 
+  const markFormStarted = (form) => {
+    if (!form?.dataset?.startedAt) {
+      form.dataset.startedAt = String(Date.now())
+    }
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault()
     const form = e.currentTarget
+    markFormStarted(form)
     const errors = validateLeadForm(form)
     setHasSubmittedOnce(true)
     setFieldErrors(errors)
@@ -25,8 +32,9 @@ export function KitCtaFormSection() {
   }
 
   const handleValidateOnEdit = (e) => {
-    if (!hasSubmittedOnce) return
     const form = e.currentTarget
+    markFormStarted(form)
+    if (!hasSubmittedOnce) return
     setFieldErrors(validateLeadForm(form))
   }
 
@@ -50,6 +58,8 @@ export function KitCtaFormSection() {
         </div>
 
         <form
+          id="lead_kit_canarias_form"
+          name="lead_kit_canarias_form"
           className="kit-cta__form"
           onSubmit={handleSubmit}
           noValidate

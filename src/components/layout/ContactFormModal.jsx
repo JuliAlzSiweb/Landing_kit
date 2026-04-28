@@ -55,9 +55,16 @@ export function ContactFormModal() {
 
   if (!isOpen) return null
 
+  const markFormStarted = (form) => {
+    if (!form?.dataset?.startedAt) {
+      form.dataset.startedAt = String(Date.now())
+    }
+  }
+
   const handleValidateOnEdit = (e) => {
-    if (!hasSubmittedOnce) return
     const form = e.currentTarget
+    markFormStarted(form)
+    if (!hasSubmittedOnce) return
     setFieldErrors(validateLeadForm(form))
   }
 
@@ -81,10 +88,13 @@ export function ContactFormModal() {
           ×
         </button>
         <form
+          id="lead_kit_canarias_form"
+          name="lead_kit_canarias_form"
           className="kit-cta__form contact-modal__form"
           onSubmit={(e) => {
             e.preventDefault()
             const form = e.currentTarget
+            markFormStarted(form)
             const errors = validateLeadForm(form)
             setHasSubmittedOnce(true)
             setFieldErrors(errors)

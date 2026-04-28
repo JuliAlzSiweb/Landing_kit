@@ -4,6 +4,41 @@ import { LEAD_WEBHOOK_URL } from '../config/leadWebhook'
 /**
  * Envío POST JSON al webhook. Éxito solo si la respuesta HTTP es exactamente 200.
  */
+function withTimeout(promise, ms) {
+  return Promise.race([
+    promise,
+    new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), ms)),
+  ])
+}
+
+async function getPublicIp() {
+  if (typeof window === 'undefined') return ''
+  try {
+    const res = await withTimeout(fetch('https://api.ipify.org?format=json'), 1800)
+    if (!res.ok) return ''
+    const data = await res.json()
+    return typeof data?.ip === 'string' ? data.ip : ''
+  } catch {
+    return ''
+  }
+}
+
+function getClientMetadata(form) {
+  if (typeof window === 'undefined') return {}
+  const now = Date.now()
+  const startedAtRaw = form?.dataset?.startedAt
+  const startedAt = Number(startedAtRaw)
+  const submitTimeMs = Number.isFinite(startedAt) && startedAt > 0 ? Math.max(0, now - startedAt) : null
+
+  return {
+    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || '',
+    userAgent: navigator.userAgent || '',
+    screen: `${window.screen.width}x${window.screen.height}`,
+    pagePath: `${window.location.pathname}${window.location.hash || ''}`,
+    submitTimeMs,
+  }
+}
+
 export function useLeadFormSubmit() {
   const [status, setStatus] = useState('idle')
   const [errorMessage, setErrorMessage] = useState('')
@@ -14,10 +49,17 @@ export function useLeadFormSubmit() {
     setErrorMessage('')
 
     const data = Object.fromEntries(new FormData(form).entries())
+    const [publicIp, clientMeta] = await Promise.all([getPublicIp(), Promise.resolve(getClientMetadata(form))])
+
     const payload = {
       ...data,
       source: 'landing-kit',
       submittedAt: new Date().toISOString(),
+      ip_public: publicIp,
+      meta: {
+        ...clientMeta,
+        ipPublic: publicIp,
+      },
     }
 
     try {
