@@ -1,168 +1,322 @@
 .contact-modal__backdrop {
   position: fixed;
   inset: 0;
-  z-index: 1000;
+  z-index: 1100;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: clamp(16px, 4vw, 32px);
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: clamp(8px, 2vw, 16px) clamp(10px, 2.2vw, 20px) clamp(12px, 2.4vw, 24px)
+    clamp(8px, 2vw, 16px);
   box-sizing: border-box;
-  background: rgba(15, 23, 42, 0.45);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+  background: rgba(15, 23, 42, 0.28);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  animation: contact-modal-backdrop-in 0.24s ease-out both;
 }
 
 .contact-modal__panel {
   position: relative;
-  width: min(100%, 440px);
-  max-height: min(92vh, 900px);
+  width: min(100%, 336px);
+  max-height: min(95vh, 740px);
   overflow: auto;
-  border-radius: clamp(16px, 2.2vw, 22px);
-  background: rgba(255, 255, 255, 0.96);
+  border-radius: 28px;
+  background: linear-gradient(
+    180deg,
+    rgba(56, 189, 248, 0.42) 0%,
+    rgba(2, 6, 23, 0.36) 52%,
+    rgba(255, 255, 255, 0.78) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.4);
   box-shadow:
-    0 24px 80px rgba(15, 23, 42, 0.2),
-    0 8px 32px rgba(15, 23, 42, 0.12);
+    0 24px 42px rgba(25, 24, 45, 0.26),
+    0 8px 20px rgba(15, 23, 42, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(16px) saturate(132%);
+  -webkit-backdrop-filter: blur(16px) saturate(132%);
+  transform-origin: bottom right;
+  animation: contact-modal-panel-in 0.34s cubic-bezier(0.22, 0.72, 0.2, 1) both;
+}
+
+@keyframes contact-modal-backdrop-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes contact-modal-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.contact-modal__header {
+  position: relative;
+  padding: 18px 16px 12px;
+  min-height: 104px;
+}
+
+.contact-modal__title {
+  margin: 0;
+  color: #ffffff;
+  font-size: clamp(0.88rem, 2.8vw, 1.38rem);
+  font-weight: 600;
+  line-height: 1.2;
 }
 
 .contact-modal__close {
   position: absolute;
-  top: clamp(8px, 1.5vw, 12px);
-  right: clamp(8px, 1.5vw, 12px);
-  z-index: 2;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  margin: 0;
-  padding: 0;
-  font: inherit;
-  font-size: 1.5rem;
-  line-height: 1;
-  color: #64748b;
-  background: transparent;
+  top: 14px;
+  right: 14px;
   border: none;
-  border-radius: 10px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1.55rem;
+  line-height: 1;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
   cursor: pointer;
-  transition:
-    background 0.15s ease,
-    color 0.15s ease;
 }
 
 .contact-modal__close:hover {
-  color: #0f172a;
-  background: rgba(15, 23, 42, 0.06);
+  background: rgba(255, 255, 255, 0.14);
+  color: #ffffff;
 }
 
 .contact-modal__close:focus-visible {
-  outline: 2px solid #2d9cdb;
+  outline: 2px solid #ffffff;
   outline-offset: 2px;
 }
 
-.contact-modal__form {
-  padding: clamp(44px, 6vw, 52px) clamp(18px, 3vw, 22px) clamp(20px, 3vw, 24px);
+.contact-modal__content {
+  padding: 10px 8px 14px;
 }
 
-.contact-modal__form .kit-cta__form-error {
-  margin-bottom: 14px;
+.contact-modal__option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 0 0 8px;
+  padding: 11px 12px;
+  border-radius: 12px;
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.76);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  color: #1f2937;
+  box-shadow: 0 3px 8px rgba(15, 23, 42, 0.06);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
-.contact-modal__form .kit-cta__form-header {
-  padding-inline: clamp(4px, 1vw, 8px);
-  margin-bottom: clamp(20px, 3vw, 26px);
-}
-
-/* Sin doble “cristal”: el panel del modal ya es la tarjeta */
-.contact-modal__form .kit-cta__glass--modal {
-  padding: 0;
-  background: transparent;
-  border: none;
-  box-shadow: none;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-}
-
-@supports not (backdrop-filter: blur(1px)) {
-  .contact-modal__form .kit-cta__glass--modal {
-    background: transparent;
-  }
-}
-
-/* Título: dos renglones, mismo degradado que el botón (.kit-cta__grad-text) */
-.contact-modal__form .kit-cta__form-kicker--modal-two-lines {
+.contact-modal__option-title {
   margin: 0;
+  font-size: 1.03rem;
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+.contact-modal__option-subtitle {
+  margin: 0;
+  font-size: 0.86rem;
+  color: #7c8797;
+}
+
+.contact-modal__option-icon {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
   text-align: center;
+  color: #6c5cf4;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.contact-modal__form .kit-cta__form-kicker--modal-grad-block {
-  display: inline-block;
-  max-width: 22em;
-  font-size: clamp(0.82rem, 2.2vw, 0.95rem);
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  line-height: 1.35;
-  text-transform: uppercase;
-  text-align: center;
+.contact-modal__option-icon-svg {
+  width: 20px;
+  height: 20px;
+  display: block;
 }
 
-/* Campos: fondo blanco, borde fino gris */
-.contact-modal__form .kit-cta__fields {
-  gap: 14px;
+.contact-modal__callback {
+  margin-top: 6px;
+  padding: 11px;
+  border-radius: 12px;
+  background: rgba(242, 244, 247, 0.62);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.04);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
-.contact-modal__form .kit-cta__input,
-.contact-modal__form .kit-cta__select {
-  border: 1px solid #e2e8f0;
-  box-shadow: none;
+.contact-modal__callback-title {
+  margin: 0 0 10px;
+  font-size: 1.32rem;
+  font-weight: 500;
+  line-height: 1.2;
+  color: #1f2937;
 }
 
-.contact-modal__form .kit-cta__input:focus,
-.contact-modal__form .kit-cta__select:focus {
-  box-shadow: 0 0 0 2px rgba(45, 156, 219, 0.35);
+.contact-modal__input {
+  width: 100%;
+  height: 38px;
+  margin: 0;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid #d4d7de;
+  background: rgba(255, 255, 255, 0.42);
+  color: #111827;
+  font: inherit;
+  font-size: 0.98rem;
+  box-sizing: border-box;
 }
 
-.contact-modal__form .kit-cta__input::placeholder {
-  color: #94a3b8;
+.contact-modal__input + .contact-modal__input,
+.contact-modal__field-error + .contact-modal__input {
+  margin-top: 8px;
 }
 
-/* CTA: fondo blanco; texto con el mismo degradado (.kit-cta__grad-text) */
-.contact-modal__form .kit-cta__submit {
-  margin-top: clamp(18px, 2.5vw, 22px);
-  padding: 14px 20px;
-  background: #fff;
-  border: 1px solid #e2e8f0;
-  border-radius: 10px;
-  box-shadow: none;
+.contact-modal__input::placeholder {
+  color: #9aa3b2;
 }
 
-.contact-modal__form .kit-cta__submit:hover {
-  background: #f8fafc;
-  border-color: rgba(45, 156, 219, 0.45);
-  box-shadow: none;
+.contact-modal__input:focus {
+  border-color: #8462ef;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(132, 98, 239, 0.18);
 }
 
-.contact-modal__form .kit-cta__submit .kit-cta__submit-label {
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  font-size: clamp(0.72rem, 1.5vw, 0.82rem);
+.contact-modal__input--invalid {
+  border-color: #dc2626;
 }
 
-/* Forzar degradado visible en modal (título y CTA) */
-.contact-modal__form .kit-cta__form-kicker--modal-grad-block.kit-cta__grad-text,
-.contact-modal__form .kit-cta__submit-label.kit-cta__grad-text {
-  background-image: linear-gradient(
-    90deg,
-    #000000 0%,
-    #0a0a0a 14%,
-    #1a4f7a 40%,
-    #2d9cdb 62%,
-    #3498db 82%,
-    #5dade2 100%
-  );
+.contact-modal__field-error,
+.contact-modal__error {
+  margin: 5px 2px 0;
+  font-size: 0.8rem;
+  color: #b91c1c;
+}
+
+.contact-modal__success {
+  margin: 0;
+  font-size: 0.92rem;
+  color: #1f2937;
+}
+
+.contact-modal__submit {
+  margin-top: 10px;
+  width: 100%;
+  height: 40px;
+  border-radius: 999px;
+  border: none;
+  background: transparent;
+  color: #6c5cf4;
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  position: relative;
+}
+
+.contact-modal__submit::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: linear-gradient(90deg, #38bdf8 0%, #020617 100%);
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.contact-modal__submit-text {
+  background-image: linear-gradient(90deg, #38bdf8 0%, #020617 100%);
   background-size: 100% 100%;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   color: transparent;
+}
+
+.contact-modal__submit:hover {
+  background: transparent;
+}
+
+.contact-modal__submit:focus-visible {
+  outline: 2px solid #7b63ff;
+  outline-offset: 2px;
+}
+
+.contact-modal__submit:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.contact-modal__hours {
+  margin: 12px 0 2px;
+  text-align: center;
+  color: #516079;
+  font-size: 0.88rem;
+}
+
+.contact-modal__sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 420px) {
+  .contact-modal__backdrop {
+    padding: 8px 8px 10px;
+  }
+
+  .contact-modal__panel {
+    width: min(100%, 320px);
+    border-radius: 24px;
+  }
+
+  .contact-modal__header {
+    min-height: 96px;
+  }
+
+  .contact-modal__title {
+    font-size: 1.16rem;
+  }
+
+  .contact-modal__callback-title {
+    font-size: 1.2rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact-modal__backdrop,
+  .contact-modal__panel {
+    animation: none;
+  }
 }

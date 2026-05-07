@@ -13,6 +13,7 @@ import { KitCtaFormSection } from './KitCtaFormSection'
 import { StepsSection } from './StepsSection'
 import { Footer } from './Footer'
 import { ContactFormModal } from './ContactFormModal'
+import { FloatingContactButton } from './FloatingContactButton'
 
 export function Layout() {
   return (
@@ -33,6 +34,7 @@ export function Layout() {
         <ProyectosKitSection />
         <KitCtaFormSection />
       </main>
+      <FloatingContactButton />
       <Footer />
     </>
   )
