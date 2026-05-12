@@ -8,7 +8,7 @@ const schema = z
     LOG_LEVEL: z.enum(['trace', 'debug', 'info', 'warn', 'error', 'fatal']).default('info'),
     LANDING_ORIGIN: z
       .string()
-      .default('https://siweb.es')
+      .default('https://siwebcanarias.es')
       .refine(
         (value) =>
           value
