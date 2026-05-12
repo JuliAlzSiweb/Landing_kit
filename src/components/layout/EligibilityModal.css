@@ -1,0 +1,360 @@
+/*
+  EligibilityModal — variante del lead-modal con estilos propios para el formulario
+  de consulta de bono. Reutiliza .lead-modal__backdrop, .lead-modal__panel y
+  .lead-modal__close de LeadFormModal.css.
+*/
+
+.eligibility-modal__panel {
+  width: min(100%, 480px);
+}
+
+.eligibility-modal__body {
+  padding: clamp(44px, 6vw, 52px) clamp(20px, 3.5vw, 28px) clamp(22px, 3vw, 28px);
+}
+
+/* ---------- Cabecera del formulario ---------- */
+.eligibility-modal__header {
+  margin-bottom: clamp(20px, 3vw, 26px);
+  text-align: center;
+}
+
+.eligibility-modal__title {
+  margin: 0 0 8px;
+  font-size: clamp(1rem, 2.6vw, 1.15rem);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1.3;
+}
+
+.eligibility-modal__title-grad {
+  background-image: linear-gradient(
+    90deg,
+    #000000 0%,
+    #0a0a0a 14%,
+    #1a4f7a 40%,
+    #2d9cdb 62%,
+    #3498db 82%,
+    #5dade2 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.eligibility-modal__subtitle {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #475569;
+  line-height: 1.45;
+}
+
+/* ---------- Campos ---------- */
+.eligibility-modal__form {
+  display: flex;
+  flex-direction: column;
+}
+
+.eligibility-modal__fields {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.eligibility-modal__field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.eligibility-modal__label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #334155;
+}
+
+.eligibility-modal__input,
+.eligibility-modal__select {
+  width: 100%;
+  padding: 12px 14px;
+  font: inherit;
+  font-size: 0.95rem;
+  color: #0f172a;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    background 0.15s ease;
+  appearance: none;
+  -webkit-appearance: none;
+  box-sizing: border-box;
+}
+
+.eligibility-modal__select {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'><path d='M1 1.5L6 6.5L11 1.5' stroke='%2364748b' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+  cursor: pointer;
+}
+
+.eligibility-modal__input::placeholder {
+  color: #94a3b8;
+}
+
+.eligibility-modal__input:focus,
+.eligibility-modal__select:focus {
+  outline: none;
+  border-color: #2d9cdb;
+  box-shadow: 0 0 0 2px rgba(45, 156, 219, 0.25);
+}
+
+.eligibility-modal__input:disabled,
+.eligibility-modal__select:disabled {
+  background: #f8fafc;
+  color: #94a3b8;
+  cursor: not-allowed;
+}
+
+.eligibility-modal__input--invalid,
+.eligibility-modal__select--invalid {
+  border-color: #ef4444;
+}
+
+.eligibility-modal__input--invalid:focus,
+.eligibility-modal__select--invalid:focus {
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.22);
+}
+
+.eligibility-modal__field-error {
+  font-size: 0.78rem;
+  color: #dc2626;
+  line-height: 1.3;
+}
+
+/* ---------- Botón principal ---------- */
+.eligibility-modal__submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-top: 4px;
+  padding: 14px 20px;
+  font: inherit;
+  font-size: 0.95rem;
+  text-decoration: none;
+  background: #fff;
+  color: inherit;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    transform 0.1s ease;
+}
+
+.eligibility-modal__submit:hover:not(:disabled) {
+  background: #f8fafc;
+  border-color: rgba(45, 156, 219, 0.45);
+}
+
+.eligibility-modal__submit:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.eligibility-modal__submit:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.eligibility-modal__submit--link {
+  text-decoration: none;
+}
+
+.eligibility-modal__submit-label {
+  font-weight: 600;
+  font-size: clamp(0.74rem, 1.6vw, 0.84rem);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background-image: linear-gradient(
+    90deg,
+    #000000 0%,
+    #0a0a0a 14%,
+    #1a4f7a 40%,
+    #2d9cdb 62%,
+    #3498db 82%,
+    #5dade2 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.eligibility-modal__hint {
+  margin: 14px 0 0;
+  font-size: 0.72rem;
+  text-align: center;
+  color: #64748b;
+}
+
+.eligibility-modal__hint a {
+  color: #2d9cdb;
+  text-decoration: underline;
+}
+
+/* ---------- Pantallas de resultado ---------- */
+.eligibility-modal__result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 14px;
+}
+
+.eligibility-modal__result-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #ffffff;
+  background: linear-gradient(135deg, #16a34a 0%, #22c55e 100%);
+  border-radius: 50%;
+  box-shadow: 0 8px 22px rgba(22, 163, 74, 0.25);
+}
+
+.eligibility-modal__result-icon--ko {
+  background: linear-gradient(135deg, #ea580c 0%, #f97316 100%);
+  box-shadow: 0 8px 22px rgba(234, 88, 12, 0.22);
+}
+
+.eligibility-modal__result-title {
+  margin: 4px 0 0;
+  font-size: clamp(1.05rem, 2.6vw, 1.25rem);
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.eligibility-modal__result-lead {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #334155;
+  line-height: 1.45;
+}
+
+.eligibility-modal__result-amount {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 14px 22px;
+  background: linear-gradient(135deg, rgba(45, 156, 219, 0.08), rgba(93, 173, 226, 0.16));
+  border: 1px solid rgba(45, 156, 219, 0.25);
+  border-radius: 14px;
+}
+
+.eligibility-modal__result-amount-value {
+  font-size: clamp(1.6rem, 4.5vw, 2rem);
+  font-weight: 800;
+  color: #1a4f7a;
+  letter-spacing: -0.01em;
+}
+
+.eligibility-modal__result-amount-label {
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #2d9cdb;
+}
+
+.eligibility-modal__result-meta {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #475569;
+}
+
+/* ---------- Lista de alternativas (caso NO elegible con opciones) ---------- */
+.eligibility-modal__alternativas-intro {
+  margin: 6px 0 0;
+  font-size: 0.92rem;
+  color: #334155;
+}
+
+.eligibility-modal__alternativas {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.eligibility-modal__alternativa {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 14px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 0.88rem;
+  color: #0f172a;
+  text-align: left;
+}
+
+.eligibility-modal__alternativa-label {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.eligibility-modal__alternativa-importe {
+  flex: 0 0 auto;
+  font-weight: 700;
+  color: #1a4f7a;
+}
+
+/* ---------- Botón secundario tipo link ---------- */
+.eligibility-modal__link {
+  margin-top: 2px;
+  padding: 8px 12px;
+  background: transparent;
+  border: none;
+  color: #2d9cdb;
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.eligibility-modal__link:hover {
+  color: #1a4f7a;
+}
+
+.eligibility-modal__link:focus-visible {
+  outline: 2px solid #2d9cdb;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@media (max-width: 480px) {
+  .eligibility-modal__body {
+    padding: 44px 18px 22px;
+  }
+
+  .eligibility-modal__result-amount-value {
+    font-size: 1.7rem;
+  }
+}

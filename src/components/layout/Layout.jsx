@@ -14,12 +14,14 @@ import { StepsSection } from './StepsSection'
 import { Footer } from './Footer'
 import { ContactFormModal } from './ContactFormModal'
 import { LeadFormModal } from './LeadFormModal'
+import { EligibilityModal } from './EligibilityModal'
 import { FloatingContactButton } from './FloatingContactButton'
 
 export function Layout() {
   return (
     <>
       <LeadFormModal />
+      <EligibilityModal />
       <Header />
       <main className="site-main">
         <MainSection />

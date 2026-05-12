@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react'
-import { LEAD_WEBHOOK_URL } from '../config/leadWebhook'
+import { CALLBACK_SHEET_WEBHOOK_URL, LEAD_WEBHOOK_URL } from '../config/leadWebhook'
 
 function withTimeout(promise, ms) {
   return Promise.race([
@@ -10,6 +10,57 @@ function withTimeout(promise, ms) {
 
 function normalizePhone(value) {
   return String(value ?? '').replace(/\D/g, '')
+}
+
+function formatSlotMadrid(iso) {
+  if (!iso) return null
+  const d = new Date(iso)
+  if (Number.isNaN(d.getTime())) return null
+  const dateParts = new Intl.DateTimeFormat('es-ES', {
+    timeZone: 'Europe/Madrid',
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  }).formatToParts(d)
+  const timeParts = new Intl.DateTimeFormat('es-ES', {
+    timeZone: 'Europe/Madrid',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  }).formatToParts(d)
+  const get = (parts, type) => parts.find((p) => p.type === type)?.value ?? ''
+  const date = `${get(dateParts, 'day')}/${get(dateParts, 'month')}/${get(dateParts, 'year')}`
+  const time = `${get(timeParts, 'hour')}:${get(timeParts, 'minute')}`
+  return `${date} ${time}`
+}
+
+function toMadridIso(iso) {
+  if (!iso) return null
+  const d = new Date(iso)
+  if (Number.isNaN(d.getTime())) return null
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'Europe/Madrid',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false,
+    timeZoneName: 'longOffset',
+  }).formatToParts(d)
+  const get = (type) => parts.find((p) => p.type === type)?.value ?? ''
+  const year = get('year')
+  const month = get('month')
+  const day = get('day')
+  let hour = get('hour')
+  if (hour === '24') hour = '00'
+  const minute = get('minute')
+  const second = get('second') || '00'
+  const tzn = get('timeZoneName') || ''
+  const offsetMatch = /GMT([+-]\d{2}:\d{2})/.exec(tzn)
+  const offset = offsetMatch ? offsetMatch[1] : '+00:00'
+  return `${year}-${month}-${day}T${hour}:${minute}:${second}${offset}`
 }
 
 async function getPublicIp() {
@@ -57,12 +108,61 @@ export function useLeadFormSubmit({ endpoint = LEAD_WEBHOOK_URL, mode = 'lead' }
       const formData = new FormData(form)
       const name = String(formData.get('nombre') ?? '').trim()
       const phone = normalizePhone(formData.get('telefono'))
+      const slotIso = String(formData.get('slot_iso') ?? '').trim()
+      const slotLabel = String(formData.get('slot_label') ?? '').trim()
       if (!phone) {
         setStatus('error')
         setErrorMessage('Introduce tu número de teléfono.')
         return
       }
-      payload = { phone, name: name || null, consent: true }
+      const scheduledSlotTime = formatSlotMadrid(slotIso)
+      const scheduledSlotIsoMadrid = toMadridIso(slotIso)
+      payload = {
+        phone,
+        name: name || null,
+        consent: true,
+        scheduled_slot_iso: scheduledSlotIsoMadrid,
+        scheduled_slot_label: slotLabel || null,
+        scheduled_slot_time: scheduledSlotTime,
+      }
+
+      // Fire-and-forget: registrar el lead en el sheet vía Make antes del POST
+      // a /click-to-call. No bloqueamos ni rompemos la llamada si Make falla.
+      try {
+        const now = new Date()
+        const fechaParts = new Intl.DateTimeFormat('es-ES', {
+          timeZone: 'Europe/Madrid',
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+        }).formatToParts(now)
+        const horaParts = new Intl.DateTimeFormat('es-ES', {
+          timeZone: 'Europe/Madrid',
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: false,
+        }).formatToParts(now)
+        const get = (parts, type) => parts.find((p) => p.type === type)?.value ?? ''
+        const fecha = `${get(fechaParts, 'day')}/${get(fechaParts, 'month')}/${get(fechaParts, 'year')}`
+        const hora = `${get(horaParts, 'hour')}:${get(horaParts, 'minute')}`
+
+        fetch(CALLBACK_SHEET_WEBHOOK_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            nombre: name || null,
+            telefono: phone,
+            fecha,
+            hora,
+            horario_solicitado: slotLabel || null,
+            horario_solicitado_iso: slotIso || null,
+            horario_solicitado_local: scheduledSlotTime,
+          }),
+          keepalive: true,
+        }).catch(() => {})
+      } catch {
+        // ignorar
+      }
     } else {
       const data = Object.fromEntries(new FormData(form).entries())
       const [publicIp, clientMeta] = await Promise.all([getPublicIp(), Promise.resolve(getClientMetadata(form))])

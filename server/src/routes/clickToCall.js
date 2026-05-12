@@ -3,10 +3,20 @@ import { z } from 'zod'
 import { config } from '../config.js'
 import { logger } from '../logger.js'
 import { getQueue, initiateCall, listUsers } from '../services/voipstudio.js'
+import { selectQueueForNow } from '../services/queueRouter.js'
 
 const router = Router()
 
 const E164_REGEX = /^[1-9]\d{7,14}$/
+
+const optionalText = (max) =>
+  z
+    .string()
+    .trim()
+    .max(max)
+    .optional()
+    .nullable()
+    .transform((value) => (value ? value : null))
 
 const bodySchema = z.object({
   phone: z.string().trim().min(1, 'phone es obligatorio'),
@@ -19,6 +29,9 @@ const bodySchema = z.object({
   consent: z.literal(true, {
     errorMap: () => ({ message: 'consent debe ser true' }),
   }),
+  scheduled_slot_iso: optionalText(40),
+  scheduled_slot_label: optionalText(80),
+  scheduled_slot_time: optionalText(40),
 })
 
 function normalizePhone(raw) {
@@ -64,10 +77,48 @@ router.post('/', async (req, res) => {
     })
   }
 
-  const queueId = config.VOIP_QUEUE_ID
+  const ip = req.ip
+  const routing = selectQueueForNow(new Date())
+  logger.info(
+    {
+      ip,
+      mode: routing.mode,
+      queue_id: routing.queueId,
+      is_open: routing.isOpen,
+      scheduled_slot_label: payload.scheduled_slot_label,
+      scheduled_slot_time: payload.scheduled_slot_time,
+    },
+    'click-to-call: routing_selected',
+  )
+
+  if (!routing.isOpen) {
+    logger.info(
+      {
+        ip,
+        phone: normalized,
+        name: payload.name,
+        mode: routing.mode,
+        scheduled_slot_iso: payload.scheduled_slot_iso,
+        scheduled_slot_label: payload.scheduled_slot_label,
+        scheduled_slot_time: payload.scheduled_slot_time,
+      },
+      'click-to-call: scheduled_off_hours',
+    )
+    return res.json({
+      ok: true,
+      code: 'scheduled',
+      message: payload.scheduled_slot_label
+        ? `Perfecto, te llamaremos el ${payload.scheduled_slot_label.toLowerCase()}.`
+        : 'Hemos registrado tu solicitud. Te llamaremos en horario laboral.',
+      scheduled_slot_iso: payload.scheduled_slot_iso,
+      scheduled_slot_label: payload.scheduled_slot_label,
+      scheduled_slot_time: payload.scheduled_slot_time,
+    })
+  }
+
+  const queueId = routing.queueId
   const fallbackAgent = config.VOIP_DEFAULT_AGENT_ID
   const maxAttempts = config.VOIP_QUEUE_MAX_ATTEMPTS
-  const ip = req.ip
 
   let candidates
   try {
@@ -130,9 +181,13 @@ router.post('/', async (req, res) => {
             phone: normalized,
             name: payload.name,
             queue_id: queueId ?? null,
+            queue_mode: routing.mode,
             agent_id: agentId,
             attempts,
             call_id: callId,
+            scheduled_slot_iso: payload.scheduled_slot_iso,
+            scheduled_slot_label: payload.scheduled_slot_label,
+            scheduled_slot_time: payload.scheduled_slot_time,
           },
           'click-to-call: call_created',
         )

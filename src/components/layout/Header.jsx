@@ -2,7 +2,7 @@ import './Header.css'
 import { useContactModal } from '../../context/ContactModalContext'
 
 export function Header() {
-  const { openLeadModal } = useContactModal()
+  const { openEligibilityModal } = useContactModal()
 
   return (
     <header className="site-header">
@@ -22,7 +22,7 @@ export function Header() {
             href="#contacto"
             onClick={(e) => {
               e.preventDefault()
-              openLeadModal()
+              openEligibilityModal()
             }}
           >
             Quiero mi bono

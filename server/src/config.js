@@ -37,20 +37,33 @@ const schema = z
       .trim()
       .optional()
       .transform((value) => (value === '' ? undefined : value)),
+    VOIP_QUEUE_ID_MORNING: z
+      .string()
+      .trim()
+      .optional()
+      .transform((value) => (value === '' ? undefined : value)),
+    VOIP_QUEUE_ID_AFTERNOON: z
+      .string()
+      .trim()
+      .optional()
+      .transform((value) => (value === '' ? undefined : value)),
     VOIP_DEFAULT_AGENT_ID: z
       .string()
       .trim()
       .optional()
       .transform((value) => (value === '' ? undefined : value)),
     VOIP_QUEUE_MAX_ATTEMPTS: z.coerce.number().int().positive().default(3),
+    BUSINESS_TIMEZONE: z.string().trim().default('Europe/Madrid'),
   })
   .superRefine((value, ctx) => {
-    if (!value.VOIP_QUEUE_ID && !value.VOIP_DEFAULT_AGENT_ID) {
+    const hasAnyQueue =
+      value.VOIP_QUEUE_ID || value.VOIP_QUEUE_ID_MORNING || value.VOIP_QUEUE_ID_AFTERNOON
+    if (!hasAnyQueue && !value.VOIP_DEFAULT_AGENT_ID) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         path: ['VOIP_QUEUE_ID'],
         message:
-          'Define VOIP_QUEUE_ID (modo cola) o VOIP_DEFAULT_AGENT_ID (modo single-agent).',
+          'Define al menos una cola (VOIP_QUEUE_ID, VOIP_QUEUE_ID_MORNING o VOIP_QUEUE_ID_AFTERNOON) o VOIP_DEFAULT_AGENT_ID.',
       })
     }
   })

@@ -5,15 +5,40 @@ const ContactModalContext = createContext(null)
 export function ContactModalProvider({ children }) {
   const [isOpen, setIsOpen] = useState(false)
   const [isLeadOpen, setIsLeadOpen] = useState(false)
+  const [isEligibilityOpen, setIsEligibilityOpen] = useState(false)
 
   const openModal = useCallback(() => setIsOpen(true), [])
   const closeModal = useCallback(() => setIsOpen(false), [])
+
   const openLeadModal = useCallback(() => setIsLeadOpen(true), [])
   const closeLeadModal = useCallback(() => setIsLeadOpen(false), [])
 
+  const openEligibilityModal = useCallback(() => setIsEligibilityOpen(true), [])
+  const closeEligibilityModal = useCallback(() => setIsEligibilityOpen(false), [])
+
   const value = useMemo(
-    () => ({ isOpen, openModal, closeModal, isLeadOpen, openLeadModal, closeLeadModal }),
-    [isOpen, openModal, closeModal, isLeadOpen, openLeadModal, closeLeadModal],
+    () => ({
+      isOpen,
+      openModal,
+      closeModal,
+      isLeadOpen,
+      openLeadModal,
+      closeLeadModal,
+      isEligibilityOpen,
+      openEligibilityModal,
+      closeEligibilityModal,
+    }),
+    [
+      isOpen,
+      openModal,
+      closeModal,
+      isLeadOpen,
+      openLeadModal,
+      closeLeadModal,
+      isEligibilityOpen,
+      openEligibilityModal,
+      closeEligibilityModal,
+    ],
   )
 
   return <ContactModalContext.Provider value={value}>{children}</ContactModalContext.Provider>
