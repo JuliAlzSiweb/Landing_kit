@@ -15,6 +15,20 @@ dist-ssr
 # PoC y materiales internos
 vendor/
 
+# Python (kd-service)
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+.pytest_cache/
+*.egg-info/
+
+# Cookies y certificados (kd-service)
+kd-service/cookies.json
+*.p12
+*.pfx
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

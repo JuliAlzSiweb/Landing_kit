@@ -1,0 +1,17 @@
+[project]
+name = "kd-service"
+version = "0.1.0"
+description = "Microservicio FastAPI que envuelve kd_contract_parser para la landing Kit Digital."
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.115.0",
+    "uvicorn[standard]>=0.32.0",
+    "pydantic>=2.9.0",
+    "pydantic-settings>=2.6.0",
+    "requests>=2.32.0",
+    "python-dotenv>=1.0.1",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-v"
