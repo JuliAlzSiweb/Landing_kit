@@ -63,6 +63,17 @@ function toMadridIso(iso) {
   return `${year}-${month}-${day}T${hour}:${minute}:${second}${offset}`
 }
 
+function formatDateMadrid(date = new Date()) {
+  const parts = new Intl.DateTimeFormat('es-ES', {
+    timeZone: 'Europe/Madrid',
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  }).formatToParts(date)
+  const get = (type) => parts.find((p) => p.type === type)?.value ?? ''
+  return `${get('day')}/${get('month')}/${get('year')}`
+}
+
 async function getPublicIp() {
   if (typeof window === 'undefined') return ''
   try {
@@ -168,6 +179,7 @@ export function useLeadFormSubmit({ endpoint = LEAD_WEBHOOK_URL, mode = 'lead' }
       const [publicIp, clientMeta] = await Promise.all([getPublicIp(), Promise.resolve(getClientMetadata(form))])
       payload = {
         ...data,
+        creado: formatDateMadrid(),
         source: 'landing-kit',
         submittedAt: new Date().toISOString(),
         ip_public: publicIp,
